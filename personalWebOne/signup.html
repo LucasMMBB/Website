@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <style>
+    #one {
+        background-image: url("images/background.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    #two {
+        background-image: url("images/background.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="one">
+        <div class="top">
+            <h1 id="title" class="hidden">
+				<span id="logo">IEEE
+					<span> eGrid</span>
+				</span>
+			</h1>
+        </div>
+        <div class="login-box animated fadeInUp">
+            <div class="box-header">
+                <h2>Sign up</h2>
+            </div>
+            <label for="name">Name</label>
+            <br/>
+            <input type="text" id="name">
+            <br/>
+            <label for="email">Email</label>
+            <br/>
+            <input type="text" id="email">
+            <br/>
+            <label for="username">Username</label>
+            <br/>
+            <input type="text" id="usernameSignUp">
+            <br/>
+            <label for="password">password</label>
+            <br/>
+            <input type="password" id="password">
+            <br/>
+            <button type="submit">Creat your accout</button>
+            <br/>
+            <a href="#">
+                <p class="small">Forgot your password?</p>
+            </a>
+        </div>
+    </div>
+    <div id=t wo>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>mother cajsdfjalflakd asdflasjfdlja asdfjlasjd
+            <br>
+        </p>
+    </div>
+    <script>
+    $(document).ready(function() {
+        $('#logo').addClass('animated fadeInDown');
+        $("input:text:visible:first").focus();
+    });
+    $('#username').focus(function() {
+        $('label[for="username"]').addClass('selected');
+    });
+    $('#username').blur(function() {
+        $('label[for="username"]').removeClass('selected');
+    });
+    $('#password').focus(function() {
+        $('label[for="password"]').addClass('selected');
+    });
+    $('#password').blur(function() {
+        $('label[for="password"]').removeClass('selected');
+    });
+    </script>
+</body>
+
+</html>
