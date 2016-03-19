@@ -449,19 +449,21 @@ function BinaryToHex(binary) {
     var iLimit = Math.floor(binary.length / 4);
     var jLimit = Math.floor(binary.length % 4);
     var index;
-    if(binary == 0){
+    if (binary == 0) {
         hex = "0";
         return hex;
     }
     index = 0;
     for (var j = jLimit; j > 0; j--) {
-        index = index+Math.pow(2, j-1)*binary.pop();
+        index = index + Math.pow(2, j - 1) * binary.pop();
     }
-    hex = hex.concat(table[index]); 
+    if (index != 0) {
+        hex = hex.concat(table[index]);
+    }
     for (var i = 0; i < iLimit; i++) {
         index = 0;
-        index = 8*binary.pop() + 4 * binary.pop() + 2 * binary.pop() + 1 * binary.pop();
+        index = 8 * binary.pop() + 4 * binary.pop() + 2 * binary.pop() + 1 * binary.pop();
         hex = hex.concat(table[index]);
-    }  
+    }
     return hex;
 }
