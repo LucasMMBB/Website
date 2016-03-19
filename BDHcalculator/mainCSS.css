@@ -1,0 +1,86 @@
+/*
+File used to test css code.
+Author: Maoxu Liu
+*/
+body{
+    background-image: url("89045.jpg");
+}
+#res {
+	/*text-align: end;*/
+    background-color: #D3D3D3;
+    color:black;
+    width: 81%;
+    height: 48px;
+    font-size: 20px;
+    border: solid;
+}
+
+#btns {
+    width: 90%;
+}
+
+#btn0 {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: #90EE90;
+    color: #A52A2A;
+}
+
+#btn1 {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: #90EE90;
+    color: #A52A2A;
+}
+
+
+#btnClr {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    /*color: white;*/
+    background-color: #006400;
+    color: white;
+}
+
+#btnEql {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: #006400;
+    color: white;
+}
+
+#btnSum {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: black;
+    color: red;
+}
+
+#btnSub {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: black;
+    color: red;
+}
+
+#btnMul {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: black;
+    color: red;
+}
+
+#btnDiv {
+    width: 22%;
+    height: 36px;
+    font-size: 18px;
+    background-color: black;
+    color: red;
+}

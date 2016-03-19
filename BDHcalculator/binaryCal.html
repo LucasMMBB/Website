@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+    <style type="text/css">
+    #btnSumBinary {
+        width: 44.3%;
+        height: 36px;
+        font-size: 18px;
+        background-color: black;
+        color: red;
+    }
+    
+    #btnSubBinary {
+        width: 44.3%;
+        height: 36px;
+        font-size: 18px;
+        background-color: black;
+        color: red;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="mainCSS.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="mainJS.js"></script>
+</head>
+
+<body>
+    <div id="res" class="calculationResult">
+    </div>
+    <!--Button Container-->
+    <div id="btns" class="buttonContainer">
+        <button id="btnClr" class="buttonClass" onclick="Clr();">Cl</button>
+        <button id="btnEql" class="buttonClass" onclick="EqlBinary();">=</button>
+        <button id="btnClr" class="buttonClass" ><a href="hexCal.html">MODE</a></button>
+        <button id="btnDiv" class="buttonClass" onclick="Div();">/</button>
+        <button id="btn0" class="buttonClass" onclick="InputZero();">0</button>
+        <button id="btn1" class="buttonClass" onclick="InputOne();">1</button>
+        <button id="btn1" class="glyphicon glyphicon-arrow-left" onclick="Backspace();"></button>
+        <button id="btnMul" class="buttonClass" onclick="Mul();">*</button>
+        <button id="btnSubBinary" class="buttonClass" onclick="Sub();">-</button>
+        <button id="btnSumBinary" class="buttonClass" onclick="Sum();">+</button>
+    </div>
+</body>
+
+</html>
