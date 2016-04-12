@@ -1,0 +1,132 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Marker animations with <code>setTimeout()</code></title>
+    <style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    #map {
+        height: 100%;
+    }
+    
+    #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto', 'sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+    }
+    
+    #floating-panel {
+        margin-left: -52px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="floating-panel">
+        <button id="drop" onclick="drop()">Drop Markers</button>
+    </div>
+    <div id="map"></div>
+    <script>
+    var Lat = [];
+    var Lng = [];
+    var LatLonArray = [];
+    var neighborhoods = [];
+    var markers = [];
+    var map;
+    //-------------------PART ONE---------------------------
+    //Description: Query data from back-end in JSON format.
+    //------------------------------------------------------
+    var xmlhttp = new XMLHttpRequest();
+    var url = "map.php";
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            myFunction(xmlhttp.responseText);
+        } else {
+            document.getElementById("map").innerHTML = "Requesting...";
+        }
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function myFunction(response) {
+        LatLonArray = JSON.parse(response);
+        // Show arr from php in format of JSON
+        var i;
+        var out;
+        for (i = 0; i < LatLonArray.length; i++) {
+            //out += LatLonArray[i] + "<hr/>";
+            if (i < LatLonArray.length / 2)
+                Lat.push(LatLonArray[i]);
+            else
+                Lng.push(LatLonArray[i]);
+        }
+        //document.getElementById("id01").innerHTML = out;
+    }
+    //-------------------PART TWO---------------------------
+    //Description: Plot GPS data on google map.
+    //------------------------------------------------------
+    function initMarker() {
+        for (i = 0; i < LatLonArray.length / 2; i++) {
+            neighborhoods.push({
+                lat: Number(Lat[i]),
+                lng: Number(Lng[i])
+            });
+        }
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: {
+                lat: 42.26247,
+                lng: -83.6813
+            }
+        });
+        initMarker();
+    }
+
+    function drop() {
+        clearMarkers();
+        for (var i = 0; i < neighborhoods.length; i++) {
+            addMarkerWithTimeout(neighborhoods[i], i * 500);
+        }
+    }
+
+    function addMarkerWithTimeout(position, timeout) {
+        window.setTimeout(function() {
+            markers.push(new google.maps.Marker({
+                position: position,
+                map: map,
+                animation: google.maps.Animation.DROP
+            }));
+        }, timeout);
+    }
+
+    function clearMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqQDz5Vhie8o3lhRHdN9IW-jJajfmO_R0&callback=initMap">
+    // Google map Application Programming Interface
+    </script>
+</body>
+
+</html>
