@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<!--
+* Author: MAOXU LIU
+* Create date: forget
+* Last improvement date: April 16, 2016 
+* Description: Vehicle to vehicle collision warning system demo and experience platform
+-->
+
+<head>
+    <meta charset="utf-8">
+    <title>Marker animations with <code>setTimeout()</code></title>
+    <style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    #map {
+        height: 100%;
+    }
+    
+    #floating-result {
+        position: absolute;
+        top: 85%;
+        left: 10%;
+        width: 10%;
+        z-index: 5;
+        text-align: center;
+        font-family: 'Roboto', 'sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        margin-left: -52px;
+        cursor: auto;
+    }
+    
+    #drop2 {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #008ae6;
+        border-radius: 20px;
+    }
+    
+    #sysresult {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #00ccff;
+        border-radius: 20px;
+    }
+    
+    #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 10%;
+        width: 10%;
+        z-index: 5;
+        text-align: center;
+        font-family: 'Roboto', 'sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        margin-left: -52px;
+        cursor: auto;
+    }
+    
+    #drop {
+        display: block;
+        width: 100%;
+        height: 30px;
+        background-color: #00e6b0;
+        border-radius: 20px;
+    }
+    
+    #button {
+        display: none;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #ccfff3;
+        color: black;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+    
+    #button:hover {
+        background-color: #ace600;
+    }
+    
+    #floating-panel:hover #button {
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="floating-result">
+        <button id="sysresult" onclick="#">Relative Position!</button>
+        <button id="sysresult" onclick="#">Lane Information!</button>
+        <button id="sysresult" onclick="#">Left Right!</button>
+        <button id="drop2" onclick="#">Sys Result!</button>
+    </div>
+    <div id="floating-panel">
+        <button id="drop" onclick="#">Click Me!</button>
+        <div class="drop-content">
+            <button id="button" onclick="dropV2()">DropMarker</button>
+            <button id="button" onclick="stopDroping()">Stop</button>
+            <button id="button" onclick="continueDroping()">Resume</button>
+            <button id="button" onclick="restart()">Restart</button>
+            <button id="button" onclick="speedup()">Speedup</button>
+            <button id="button" onclick="speedown()">Speedown</button>
+        </div>
+    </div>
+    <div id="map"></div>
+    <script>
+    var HV_Lat = [];
+    var HV_Lng = [];
+    var RV_Lat = [];
+    var RV_Lng = [];
+    var LatLonArray = [];
+    var neighborhoods_HV = [];
+    var neighborhoods_RV = [];
+    var markers_HV = [];
+    var markers_RV = [];
+    var map;
+    var dropIndex = 0;
+    var dropStatus = 0; // Initial value is 0 means the status is 'STOP', 1 means 'DROPPING'.
+    var setTimeIntervalID;
+    var initTimeout = 1000;
+    //-------------------PART ONE---------------------------
+    //Description: Query data from back-end in JSON format.
+    //------------------------------------------------------
+    var xmlhttp = new XMLHttpRequest();
+    var url = "mapV4.php";
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            myFunction(xmlhttp.responseText);
+        } else {
+            document.getElementById("map").innerHTML = "Requesting...<hr/>If this take more than 30 secondes, please refresh the page!";
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function myFunction(response) {
+        LatLonArray = JSON.parse(response);
+        // Decode data from php in format of JSON
+        var i;
+        //var out;
+        for (i = 0; i < LatLonArray.length; i++) {
+            //out += LatLonArray[i] + "<hr/>";
+            if (i < LatLonArray.length / 4) {
+                HV_Lat.push(LatLonArray[i]);
+            } else if (LatLonArray.length / 4 - 1 < i && i < LatLonArray.length / 2) {
+                HV_Lng.push(LatLonArray[i]);
+            } else if (LatLonArray.length / 2 - 1 < i && i < LatLonArray.length * 3 / 4) {
+                RV_Lat.push(LatLonArray[i]);
+            } else {
+                RV_Lng.push(LatLonArray[i]);
+            }
+        }
+        //document.getElementById("id01").innerHTML = out;
+    }
+
+
+    //-------------------PART TWO---------------------------
+    //Description: Plot GPS data on google map.
+    //------------------------------------------------------
+    function initMarker() {
+        for (i = 0; i < LatLonArray.length / 4; i++) {
+            neighborhoods_HV.push({
+                lat: Number(HV_Lat[i]),
+                lng: Number(HV_Lng[i])
+            });
+
+            neighborhoods_RV.push({
+                lat: Number(RV_Lat[i]),
+                lng: Number(RV_Lng[i])
+            });
+        }
+
+        //recursing this function until we we got data
+        if (neighborhoods_HV.length === 0 || neighborhoods_RV.length === 0) {
+            initMarker();
+        } else {
+            alert("Trips is ready!!!");
+        }
+
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 42.2741,
+                lng: -83.7488
+            },
+            zoom: 18
+        });
+        setTimeout(initMarker, 5000);
+
+    }
+
+    function dropV2() {
+        if (dropStatus === 0) {
+            dropStatus = 1; //change the drop status to 'DROPING'.
+            initTimeout = 1000;
+            setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
+        }
+    }
+
+    function MarkerPusher() {
+        if (dropIndex < neighborhoods_HV.length) {
+            markers_HV.push(new google.maps.Circle({
+                center: neighborhoods_HV[dropIndex],
+                map: map,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                radius: 1
+            }));
+            markers_RV.push(new google.maps.Circle({
+                center: neighborhoods_RV[dropIndex],
+                map: map,
+                strokeColor: '#0000FF',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#0000FF',
+                fillOpacity: 0.35,
+                radius: 1
+            }));
+            dropIndex++;
+        }
+    }
+
+    function clearMarkers() {
+        stopDroping();
+        for (var i = 0; i < markers_HV.length; i++) {
+            markers_HV[i].setMap(null);
+            markers_RV[i].setMap(null);
+        } // clean them on the map firstly.
+        markers_HV = []; // clean the hv data.
+        markers_RV = []; // clean the rv data.
+        dropIndex = 0; // set the index = 0 so that we can restart.
+    }
+
+    function stopDroping() {
+        clearInterval(setTimeIntervalID);
+        dropStatus = 0;
+    }
+
+    function continueDroping() {
+        if (dropStatus === 0) {
+            setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
+            dropStatus = 1;
+        }
+    }
+
+    function restart() {
+        // To be continued
+        clearMarkers();
+        initTimeout = 1000;
+        setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
+        dropStatus = 1;
+    }
+
+    /*----------functions added in april 16, 2016-----------*/
+    function speedup() {
+        if (dropStatus === 1 && initTimeout > 200) {
+            initTimeout -= 200;
+            clearInterval(setTimeIntervalID);
+            setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
+        } else if (dropStatus ===0) {
+            alert("Please start your trip firstly!");
+        } else{
+            //do nothing!
+        }
+    }
+
+    function speedown() {
+        if (dropStatus === 1) {
+            initTimeout += 200;
+            clearInterval(setTimeIntervalID);
+            setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
+        } else {
+            alert("Please start your trip firstly!");
+        }
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqQDz5Vhie8o3lhRHdN9IW-jJajfmO_R0&callback=initMap">
+    </script>
+</body>
+
+</html>
