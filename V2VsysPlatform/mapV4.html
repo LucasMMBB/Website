@@ -21,38 +21,7 @@
     #map {
         height: 100%;
     }
-    
-    #floating-result {
-        position: absolute;
-        top: 85%;
-        left: 10%;
-        width: 10%;
-        z-index: 5;
-        text-align: center;
-        font-family: 'Roboto', 'sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-        margin-left: -52px;
-        cursor: auto;
-    }
-    
-    #drop2 {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 30px;
-        background-color: #008ae6;
-        border-radius: 20px;
-    }
-    
-    #sysresult {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 30px;
-        background-color: #00ccff;
-        border-radius: 20px;
-    }
+    /*------------ Click Me css ----------------*/
     
     #floating-panel {
         position: absolute;
@@ -94,16 +63,88 @@
     #floating-panel:hover #button {
         display: block;
     }
+    /*------------ Click Me css ENDS ----------------*/
+    /*------------ Load data css ----------------*/
+
+    #floating-loadData {
+        position: absolute;
+        top: 10px;
+        left: 21%;
+        width: 10%;
+        z-index: 5;
+        text-align: center;
+        font-family: 'Roboto', 'sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        margin-left: -52px;
+        cursor: auto;
+    }
+    
+    #drop_loading {
+        display: block;
+        width: 100%;
+        height: 30px;
+        background-color: #00e6b0;
+        border-radius: 20px;
+    }
+    
+    #buttonLOAD {
+        display: none;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #ccfff3;
+        color: black;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+    
+    #buttonLOAD:hover {
+        background-color: #ace600;
+    }
+    
+    #floating-loadData:hover #buttonLOAD {
+        display: block;
+    }
+    /*------------ Load data css ENDS----------------*/
+    /*------------ Sys result css ----------------*/
+    
+    #floating-result {
+        position: absolute;
+        top: 85%;
+        left: 10%;
+        width: 10%;
+        z-index: 5;
+        text-align: center;
+        font-family: 'Roboto', 'sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        margin-left: -52px;
+        cursor: auto;
+    }
+    
+    #drop2 {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #008ae6;
+        border-radius: 20px;
+    }
+    
+    #sysresult {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #00ccff;
+        border-radius: 20px;
+    }
+    /*------------ Sys results css ENDS----------------*/
     </style>
 </head>
 
 <body>
-    <div id="floating-result">
-        <button id="sysresult" onclick="#">Relative Position!</button>
-        <button id="sysresult" onclick="#">Lane Information!</button>
-        <button id="sysresult" onclick="#">Left Right!</button>
-        <button id="drop2" onclick="#">Sys Result!</button>
-    </div>
     <div id="floating-panel">
         <button id="drop" onclick="#">Click Me!</button>
         <div class="drop-content">
@@ -114,6 +155,22 @@
             <button id="button" onclick="speedup()">Speedup</button>
             <button id="button" onclick="speedown()">Speedown</button>
         </div>
+    </div>
+    <div id="floating-loadData">
+        <button id="drop_loading" onclick="#">Load data!</button>
+        <div class="drop-content">
+            <button id="buttonLOAD" onclick="#">Case 1</button>
+            <button id="buttonLOAD" onclick="#">Case 3</button>
+            <button id="buttonLOAD" onclick="#">Case 6</button>
+            <button id="buttonLOAD" onclick="#">Case 8</button>
+            <button id="buttonLOAD" onclick="#">Case 9</button>
+        </div>
+    </div>
+        <div id="floating-result">
+        <button id="sysresult" onclick="#">Relative Position!</button>
+        <button id="sysresult" onclick="#">Lane Information!</button>
+        <button id="sysresult" onclick="#">Left Right!</button>
+        <button id="drop2" onclick="#">Sys Result!</button>
     </div>
     <div id="map"></div>
     <script>
@@ -275,9 +332,9 @@
             initTimeout -= 200;
             clearInterval(setTimeIntervalID);
             setTimeIntervalID = window.setInterval(MarkerPusher, initTimeout);
-        } else if (dropStatus ===0) {
+        } else if (dropStatus === 0) {
             alert("Please start your trip firstly!");
-        } else{
+        } else {
             //do nothing!
         }
     }
