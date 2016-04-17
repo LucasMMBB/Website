@@ -9,3 +9,6 @@ Version 2: link: welcometolucs.com/test.html
 Version 3: link: welcometolucs.com/test2.html
     test2.html
     test2.php
+Version 4: link: welcometolucs.com/mapV4.html
+    mapV4.html
+    mapV4.php
