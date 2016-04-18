@@ -12,3 +12,6 @@ Version 3: link: welcometolucs.com/test2.html
 Version 4: link: welcometolucs.com/mapV4.html
     mapV4.html
     mapV4.php
+Version 5: link: welcometolucs.com/mapV5.html
+    mapV5.html
+    mapV5.php
