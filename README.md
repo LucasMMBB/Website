@@ -1,6 +1,5 @@
-# Website
-Website projects i made.                                                                                                              
-Some for organiztions.                                                                                                                  Some for fun.
-
-# Best blogs
-I share some valuable blogs
+# Personal Web apps
+Here i share some of my personal web apps including:
+- Vehicle to V2hicle collision waring system
+- BDH multi-mode calculator
+- Chat application
